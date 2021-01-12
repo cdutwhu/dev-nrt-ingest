@@ -40,6 +40,8 @@ func proc(params ...interface{}) error {
 		mutex.Unlock()
 	}
 
+	xml = xt.RmEmptyEle(xml, 3, false)
+
 	if cvt2json {
 		parse4json(xml, ingest)
 	} else {

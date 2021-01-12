@@ -28,22 +28,22 @@ func main() {
 
 	// ---------------- //
 
-	// ingest, err := store.NewBadgerDB("./db")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer ingest.Close()
-	// defer ingest.Flush()
-
-	// ---------------- //
-
-	ingest, err := store.NewLocalFile("./file/sif.json")
+	ingest, err := store.NewBadgerDB("./db")
 	if err != nil {
 		panic(err)
 	}
-	defer ingest.FlushClose()
+	defer ingest.Close()
+	defer ingest.Flush()
+
+	// ---------------- //
+
+	// ingest, err := store.NewLocalFile("./file/sif.json")
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// defer ingest.FlushClose()
 
 	// ------------------------------------- //
 
-	scan("./sif.xml", true, true, ingest)
+	scan("./rrd.xml", true, true, ingest)
 }

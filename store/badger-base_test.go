@@ -7,6 +7,14 @@ import (
 	"github.com/cdutwhu/gotil/misc"
 )
 
+func TestCountDB(t *testing.T) {
+	defer misc.TrackTime(time.Now())
+
+	dbs := openBadger("../db/", "val")
+	fPln(count(dbs[0]))
+	closeBadger(dbs...)
+}
+
 func TestUpdateBadgerDB(t *testing.T) {
 	defer misc.TrackTime(time.Now())
 

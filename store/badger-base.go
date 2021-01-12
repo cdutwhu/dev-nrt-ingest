@@ -32,6 +32,24 @@ func closeBadger(dbs ...*badger.DB) error {
 	return nil
 }
 
+// count :
+func count(db *badger.DB) (cnt int) {
+	opt := badger.DefaultIteratorOptions
+	db.View(func(txn *badger.Txn) error {
+		itr := txn.NewIterator(opt)
+		defer itr.Close()
+		for itr.Rewind(); itr.Valid(); itr.Next() {
+			item := itr.Item()
+			item.Value(func(v []byte) error {
+				cnt++
+				return nil
+			})
+		}
+		return nil
+	})
+	return cnt
+}
+
 func setBadgerBat(db *badger.DB, ksvs ...string) error {
 	if len(ksvs)%2 != 0 {
 		return fEf("each of ksvs key MUST have one value; left ksvs are keys, right ksvs are values")

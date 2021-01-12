@@ -25,3 +25,11 @@ const (
 	contAttrName = "value"
 	attrNameOfID = "RefId"
 )
+
+var (
+	dataCheck = false
+	// SetDataCheck : check xml & json in parsing
+	SetDataCheck = func(check bool) {
+		dataCheck = check
+	}
+)

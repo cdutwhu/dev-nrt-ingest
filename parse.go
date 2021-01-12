@@ -142,9 +142,12 @@ func parse4json(xml string, ingest IIngest) {
 	}
 
 	// DEBUG checking ...
-	// if !xt.IsValid(xml) {
-	// 	panic("*ERROR*, Invalid XML")
-	// }
+	if dataCheck {
+		if !xt.IsValid(xml) {
+			errRecord(xml, "")
+			panic("*ERROR*, Invalid XML")
+		}
+	}
 
 	// xml -> json
 	jstr := xt.MkJSON(xml)
@@ -155,10 +158,12 @@ func parse4json(xml string, ingest IIngest) {
 	}
 
 	// DEBUG checking ...
-	// if !jt.IsValid(jstr) {
-	// 	errRecord(xml, jstr)
-	// 	panic("*ERROR*, Invalid JSON")
-	// }
+	if dataCheck {
+		if !jt.IsValid(jstr) {
+			errRecord(xml, jstr)
+			panic("*ERROR*, Invalid JSON")
+		}
+	}
 
 	ingest.AddVal(RefID, []byte(jstr), false) // SAVE a copy of object string ... ZIP (store/map.go)
 }
