@@ -6,18 +6,36 @@ import (
 	"sync"
 
 	xt "github.com/cdutwhu/xml-tool"
+	"github.com/gosuri/uiprogress"
 )
 
 // scan :
-func scan(xmlpath string, cvt2json, async bool, ingest IIngest) {
+func scan(xmlpath string, cvt2json, async bool, ingest IIngest) (count uint64) {
+
 	file, err := os.Open(xmlpath)
+	if err != nil {
+		panic(err)
+	}
+	fileinfo, err := file.Stat()
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 
+	// -------------------------- //
+
+	// progress bar
+	if probar {
+		uip = uiprogress.New()
+		defer uip.Stop()
+		uip.Start()
+		bar = uip.AddBar(int(fileinfo.Size()))
+		bar.AppendCompleted().PrependElapsed()
+	}
+
+	// -------------------------- //
+
 	br := bufio.NewReader(file)
-	count := int64(0)
 	var dataTypes = []string{
 		"NAPStudentResponseSet",
 		"NAPEventStudentLink",
@@ -44,5 +62,5 @@ func scan(xmlpath string, cvt2json, async bool, ingest IIngest) {
 		}
 	}
 
-	fPln("total", count)
+	return
 }

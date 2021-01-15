@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 	"strings"
+
+	"github.com/gosuri/uiprogress"
 )
 
 var (
 	fPln       = fmt.Println
+	fPf        = fmt.Printf
 	sTrimLeft  = strings.TrimLeft
 	sTrimRight = strings.TrimRight
 	sHasSuffix = strings.HasSuffix
@@ -27,9 +30,16 @@ const (
 )
 
 var (
-	dataCheck = false
-	// SetDataCheck : check xml & json in parsing
-	SetDataCheck = func(check bool) {
-		dataCheck = check
+	validate = false
+	// CheckData : validate xml & json in parsing
+	CheckData = func(check bool) {
+		validate = check
 	}
+)
+
+var (
+	uip      *uiprogress.Progress
+	bar      *uiprogress.Bar
+	procsize uint64
+	probar   bool
 )

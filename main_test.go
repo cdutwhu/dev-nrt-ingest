@@ -7,8 +7,7 @@ import (
 
 func TestMain(t *testing.T) {
 	os.Remove("err-json.json")
-	os.Remove("err-json.xml")
-	SetDataCheck(false)
+	os.Remove("err-json.xml")	
 	main()
 }
 

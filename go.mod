@@ -17,6 +17,8 @@ require (
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/google/uuid v1.1.4
 	github.com/gookit/color v1.3.6 // indirect
+	github.com/gosuri/uilive v0.0.4 // indirect
+	github.com/gosuri/uiprogress v0.0.1
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	golang.org/x/sys v0.0.0-20210110051926-789bb1bd4061 // indirect

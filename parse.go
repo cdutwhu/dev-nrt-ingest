@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"os"
 
 	jt "github.com/cdutwhu/json-tool"
 	xt "github.com/cdutwhu/xml-tool"
@@ -137,12 +138,12 @@ func parse(xml string, ingest IIngest) {
 func parse4json(xml string, ingest IIngest) {
 
 	errRecord := func(xml, jstr string) {
-		ioutil.WriteFile("err-json.xml", []byte(xml), 0666)
-		ioutil.WriteFile("err-json.json", []byte(jstr), 0666)
+		ioutil.WriteFile("err-json.xml", []byte(xml), os.ModePerm)
+		ioutil.WriteFile("err-json.json", []byte(jstr), os.ModePerm)
 	}
 
 	// DEBUG checking ...
-	if dataCheck {
+	if validate {
 		if !xt.IsValid(xml) {
 			errRecord(xml, "")
 			panic("*ERROR*, Invalid XML")
@@ -158,7 +159,7 @@ func parse4json(xml string, ingest IIngest) {
 	}
 
 	// DEBUG checking ...
-	if dataCheck {
+	if validate {
 		if !jt.IsValid(jstr) {
 			errRecord(xml, jstr)
 			panic("*ERROR*, Invalid JSON")

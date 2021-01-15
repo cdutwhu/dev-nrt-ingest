@@ -2,18 +2,18 @@ package main
 
 import (
 	"sync"
+	"sync/atomic"
 
 	xt "github.com/cdutwhu/xml-tool"
 )
 
-// var ops uint64
 var mutex = &sync.Mutex{}
 
 func proc(params ...interface{}) error {
 
 	var (
 		wg       *sync.WaitGroup
-		id       = params[1].(int64)   // threadID
+		id       = params[1].(uint64)  // threadID
 		xml      = params[2].(string)  // input xml
 		cvt2json = params[3].(bool)    // whether to convert to json
 		ingest   = params[4].(IIngest) // ingest interface
@@ -21,27 +21,22 @@ func proc(params ...interface{}) error {
 
 	if params[0] != nil {
 		wg = params[0].(*sync.WaitGroup) // WaitGroup
+		defer wg.Done()
+		wg.Add(1)
 	}
 
-	if wg != nil {
-		defer func() {
-			mutex.Lock()
-			wg.Done()
-			mutex.Unlock()
-		}()
+	if probar {
+		// mutex.Lock()
+		// -- progress bar -- //
+		atomic.AddUint64(&procsize, uint64(len(xml)))
+		bar.Set(int(procsize))
+		bar.Incr()
+		// mutex.Unlock()
 	}
 
-	// atomic.AddUint64(&ops, 1)
 	dbgPln(false, "---@---", id)
 
-	if wg != nil {
-		mutex.Lock()
-		wg.Add(1)
-		mutex.Unlock()
-	}
-
 	xml = xt.RmEmptyEle(xml, 3, false)
-
 	if cvt2json {
 		parse4json(xml, ingest)
 	} else {
